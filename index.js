@@ -1,46 +1,26 @@
-const express = require("express")
+const express = require("express");
+const cors = require("cors");
 const app = express();
 const port = 3000;
+const ip = require("ip");
+const ipAddr = ip.address();
 
-let users = [
-    {
-        id: 1,
-        firstname: "John",
-        lastname: "Doe",
-    },
-    {
-        id: 2,
-        firstname: "Bob",
-        lastname: "Juan",
-    },
-    {
-        id: 3,
-        firstname: "Pablo",
-        lastname: "Samuel",
-    },
-    {
-        id: 4,
-        firstname: "Jack",
-        lastname: "Jacques",
-    },
-];
+let Maison = "Gryffindor";
 
-app.get("/users", (req, res) => {
-    res.send("Hello World");
+app.use(cors());
+
+app.use(express.json());
+
+app.get("/", (req, res) => {    
+  res.json({Maison})
 });
-
-app.get("/users/:id", (req, res) => {
-    res.send("Hello World!");
-});
-
-app.post("/users", (req, res) => {
-    res.send("Hello World!")
+app.post("/", (req, res) => {
+  Maison = req.body.Maison
+  res.json({Maison})
 })
 
-app.put("/users/:id", (req, res) => {
-    res.send("Hello World!")
-})
+app.use("/", require("./routes/start"));
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
-})
+  console.log("http://"+ip.address()+":"+ port);
+});
